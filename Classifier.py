@@ -5,10 +5,14 @@ from Utils import read_data_set
 
 class TTOSOM:
 
-    def __init__(self):
+    def __init__(self, topology, training_set):
         self.root = None
+        self.training_set = training_set
+        self.topology = topology
 
-    def describe_topology(self, topology_path, data_set_path):
-        topology = read_topology(topology_path)
-        data_set = read_data_set(data_set_path)
-        self.root = Neuron(None, topology, data_set)
+    def build_classifier(self):
+        self.__describe_topology()
+
+    def __describe_topology(self):
+        self.root = Neuron(None, self.topology, self.training_set)
+        print(self.root)

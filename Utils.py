@@ -12,7 +12,6 @@ def read_topology(topology_file_path):
     for i in range(len(topology_description)):
         current_element = {"id": i, "number_of_children": int(topology_description[i])}
         topology.append(current_element)
-
     return topology
 
 # Currently this is reading from an URL, it might be changed in the future

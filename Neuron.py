@@ -7,6 +7,7 @@ class Neuron:
         self.children = []
         self.parent = parent
         self.id = topology[0]["id"]
+
         del topology[0]
         for i in range(number_of_children):
             self.children.append(Neuron(self,topology,data_set))
