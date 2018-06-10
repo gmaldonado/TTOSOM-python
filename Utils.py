@@ -8,6 +8,7 @@ def read_topology(topology_file_path):
     with open(topology_file_path) as topology_file:
         topology_description = topology_file.readline().split(" ")
 
+    ##this is a complete new method that should be called describe_topology
     topology = []
     for i in range(len(topology_description)):
         current_element = {"id": i, "number_of_children": int(topology_description[i])}
@@ -18,7 +19,7 @@ def read_topology(topology_file_path):
 def read_data_set(path):
     url_content = requests.get(path).content
     data_set = pd.read_csv(io.StringIO(url_content.decode('utf-8')))
-    return data_set
+    return data_set.values
 
 
 # This method is only created if you want to check the structure of the tree
