@@ -31,3 +31,10 @@ def print_tree(neuron, indent):
         print(neuron.id)
         for child in neuron.children:
             print_tree(child, indent + 2)
+
+#@staticmethod
+def retrieve_classes_as_map(classes):
+    classes_as_map = {}
+    for i in range(len(classes)):
+        classes_as_map[classes[i]] = i
+    return classes_as_map
