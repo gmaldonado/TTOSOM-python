@@ -3,14 +3,14 @@ import random
 from math import sqrt
 import sys
 from random import randint
+import time
 
 #TODO check everything related to seed
 class TTOSOM:
 
-    def __init__(self, topology, training_set, initial_radius, initial_learning_rate,final_radius, final_learning_rate, iterations, classes_as_map):
+    def __init__(self, training_set, initial_radius, initial_learning_rate,final_radius, final_learning_rate, iterations, classes_as_map):
         self.root = None
         self.training_set = training_set
-        self.topology = topology
         self.initial_radius = initial_radius
         self.initial_learning_rate = initial_learning_rate
         self.final_radius = final_radius
@@ -21,9 +21,12 @@ class TTOSOM:
         self.classes_as_map = classes_as_map
 
     def build_classifier(self):
+        start = time.time()
         self.__describe_topology()
         self.__cluster()
         self.__compute_labels()
+        end = time.time()
+        print(end-start)
 
     def __compute_labels(self):
         labeled_data = []
@@ -41,7 +44,7 @@ class TTOSOM:
         if node is not None:
             classes = [0]*len(data)
             for i in range(len(cluster_vector)):
-                if cluster_vector[i] == node.id:
+                if cluster_vector[i] == node.node_id:
                     class_index = self.classes_as_map[data[i][num_attributes]]
                     classes[class_index] += 1
 
@@ -76,10 +79,10 @@ class TTOSOM:
 
     def __cluster_instance(self, instance):
         bmu = self.__find_bmu(instance, self.root)
-        return bmu.id
+        return bmu.node_id
 
     def __describe_topology(self):
-        self.root = Neuron(None, self.topology, self.training_set)
+        self.root = Neuron(None,2,2,self.training_set)
         self.__tree_to_array(self.root)
         self.__pre_compute_neighbors()
 
@@ -104,7 +107,7 @@ class TTOSOM:
                 radius_to_neurons[radius] = bubble_of_activity
                 radius += 1
                 condition=len(bubble_of_activity)<len(self.neurons_list)
-            self.map[neuron.id] = radius_to_neurons
+            self.map[neuron.node_id] = radius_to_neurons
 
     def __calculate_neighborhood(self,bubble_of_activity,current,radius,origin):
         if radius <= 0:
@@ -139,7 +142,7 @@ class TTOSOM:
             self.__update_rule(neuron.weight,learning_rate,input_sample)
 
     def __get_precomputed_bubble(self,radius,bmu):
-        selected_bmu = self.map[bmu.id]
+        selected_bmu = self.map[bmu.node_id]
 
         if (radius+1) > len(selected_bmu):
             bubble_of_activity = selected_bmu[len(selected_bmu)-1]
